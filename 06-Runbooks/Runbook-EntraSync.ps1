@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Runbook-EntraSync.ps1 v2.0.0
     Azure Automation Runbook — MDE Entra ID Group Synchronization

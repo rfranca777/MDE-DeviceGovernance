@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Test-E2E.ps1 v3.0.0
     MDE Device Governance — End-to-End Validation Suite

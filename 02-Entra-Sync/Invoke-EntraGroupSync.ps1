@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Invoke-EntraGroupSync.ps1 v2.0.0
     MDE Device Governance — Entra ID Group Sync (per subscription)

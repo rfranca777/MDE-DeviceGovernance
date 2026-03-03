@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Invoke-MDE-DeviceLifecycle.ps1 v3.0.0
     MDE Device Governance — Complete Lifecycle Engine

@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Runbook-Lifecycle.ps1 v3.0.0
     Azure Automation Runbook — MDE Device Lifecycle Classification

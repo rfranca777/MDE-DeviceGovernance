@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Set-MDEDeviceTag.ps1 v3.0.0
     MDE Device Governance — Registry-Based Device Tag Applier

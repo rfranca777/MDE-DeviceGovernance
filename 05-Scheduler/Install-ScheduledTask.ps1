@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Install-ScheduledTask.ps1 v2.0.0
     MDE Device Governance — Windows Task Scheduler Setup

@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Run-Governance.ps1 v2.0.0
     MDE Device Governance — Periodic Execution Wrapper

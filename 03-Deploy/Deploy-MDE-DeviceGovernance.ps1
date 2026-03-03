@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Deploy-MDE-DeviceGovernance.ps1 v3.0.0
     MDE Device Governance — 16-Stage Azure Infrastructure Deployer
