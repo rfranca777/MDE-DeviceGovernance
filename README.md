@@ -229,10 +229,24 @@ After deployment, create device groups in [security.microsoft.com](https://secur
 
 ---
 
+## Related Projects
+
+| Repository | Status | Role |
+|---|---|---|
+| [MDE-ServerTagsBySubscription](https://github.com/rfranca777/MDE-ServerTagsBySubscription) | ✅ Active — v3.0.0 | **Companion** — lightweight subscription-based tagging for Windows Server environments (PS5.1 compatible). Use when you need only server classification without Entra sync or Azure Automation. |
+| [MDE-PolicyAutomation](https://github.com/rfranca777/MDE-PolicyAutomation) | ✅ Active — v1.0.4 | **Predecessor** — Azure Policy + Intune + MDE governance framework. Core components integrated and extended into this project. |
+| [MDE-ServerTags](https://github.com/rfranca777/MDE-ServerTags) | 🗄️ **[LEGACY — archived]** | Superseded by MDE-ServerTagsBySubscription v3.0.0 and MDE-DeviceGovernance v3.0.0. |
+
+> **Which project should I use?**
+> - **Full enterprise governance** (Entra ID sync, Azure Automation, lifecycle runbooks, multi-subscription): use **this project** (`MDE-DeviceGovernance`)
+> - **Lightweight server tagging only** (PS5.1, no cloud dependency, on-prem friendly): use [`MDE-ServerTagsBySubscription`](https://github.com/rfranca777/MDE-ServerTagsBySubscription)
+
+---
+
 ## License
 
 MIT — Rafael França | Microsoft Customer Success Account Manager (Cyber Security)
 
 ---
 
-*Part of the MDE-DeviceGovernance project. Do not modify MDE-ServerTags-ENTREGA-CIELO or MDE-PolicyAutomation — this project supersedes and extends them without breaking changes.*
+*MDE-DeviceGovernance v3.0.0 — the unified governance platform that supersedes MDE-ServerTags v2.2 and extends MDE-PolicyAutomation v1.0.4. For lightweight server-only tagging, see the companion project MDE-ServerTagsBySubscription.*
