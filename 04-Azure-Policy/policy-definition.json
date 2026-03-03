@@ -1,0 +1,69 @@
+{
+  "displayName": "MDE Device Governance - Audit VM Registry Tag",
+  "description": "Audits whether Windows VMs have the MDE device group tag applied via registry. Use Set-MDEDeviceTag.ps1 (in this folder) to remediate. Managed by MDE-DeviceGovernance v3.0.",
+  "policyType": "Custom",
+  "mode": "Indexed",
+  "metadata": {
+    "version": "3.0.0",
+    "category": "Security",
+    "project": "MDE-DeviceGovernance"
+  },
+  "parameters": {
+    "tagValue": {
+      "type": "String",
+      "metadata": {
+        "displayName": "MDE Device Tag Value",
+        "description": "Expected tag value at HKLM:...DeviceTagging\\Group. Leave empty to match any non-empty value."
+      },
+      "defaultValue": ""
+    },
+    "effect": {
+      "type": "String",
+      "metadata": {
+        "displayName": "Effect",
+        "description": "AuditIfNotExists audits VMs missing the extension. Disabled disables the policy."
+      },
+      "allowedValues": [
+        "AuditIfNotExists",
+        "Disabled"
+      ],
+      "defaultValue": "AuditIfNotExists"
+    }
+  },
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.Compute/virtualMachines"
+        },
+        {
+          "field": "location",
+          "notIn": [ "global" ]
+        }
+      ]
+    },
+    "then": {
+      "effect": "[parameters('effect')]",
+      "details": {
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "existenceCondition": {
+          "allOf": [
+            {
+              "field": "Microsoft.Compute/virtualMachines/extensions/publisher",
+              "equals": "Microsoft.Compute"
+            },
+            {
+              "field": "Microsoft.Compute/virtualMachines/extensions/type",
+              "equals": "CustomScriptExtension"
+            },
+            {
+              "field": "Microsoft.Compute/virtualMachines/extensions/provisioningState",
+              "equals": "Succeeded"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

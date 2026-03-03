@@ -1,0 +1,106 @@
+{
+  "_meta": {
+    "_projeto": "MDE-DeviceGovernance",
+    "_versao_config": "3.0.0",
+    "_data": "2026-03-02",
+    "_descricao": "Configuração central do MDE Device Governance — lifecycle engine + infra Azure integrados.",
+    "_instrucoes": "1) Preencha a seção 'autenticacao'. 2) Ajuste 'classificacao' conforme SLA do ambiente. 3) Execute Deploy-MDE-DeviceGovernance.ps1 para provisionamento da infraestrutura Azure."
+  },
+
+  "autenticacao": {
+    "_descricao": "Credenciais do App Registration no Azure AD (Machine.ReadWrite.All obrigatório).",
+    "_seguranca": "Em produção use Azure Key Vault ou Azure Automation Variables (azureAutomation.habilitado=true).",
+    "tenantId": "<SEU_TENANT_ID>",
+    "appId":    "<SEU_APP_ID>",
+    "appSecret":"<SEU_APP_SECRET>"
+  },
+
+  "azureAutomation": {
+    "_descricao": "Quando habilitado=true, as credenciais são lidas de Azure Automation Variables em vez do arquivo. Ideal para execução em Runbooks com Managed Identity.",
+    "habilitado": false,
+    "usarManagedIdentity": false,
+    "_usarManagedIdentity_nota": "true = usa Managed Identity para obter ARM Token (zero secrets para descoberta de subscriptions). appSecret ainda necessário para MDE API.",
+    "nomeVariavel_tenantId": "MDEGovernance-TenantId",
+    "nomeVariavel_appId":    "MDEGovernance-AppId",
+    "nomeVariavel_appSecret":"MDEGovernance-AppSecret"
+  },
+
+  "caminhos": {
+    "_descricao": "Caminhos relativos à pasta raiz do projeto.",
+    "scriptLifecycle":       ".\\01-Core-Engine\\Invoke-MDE-DeviceLifecycle.ps1",
+    "scriptEntraSync":       ".\\02-Entra-Sync\\Invoke-EntraGroupSync.ps1",
+    "subscriptionMappingCsv":".\\config\\subscription_mapping.csv",
+    "pastaLogs":             ".\\Logs",
+    "pastaRelatorios":       ".\\Relatorios",
+    "offboardCandidatesCsv": ".\\Relatorios\\offboard-candidates-{DATE}.csv",
+    "_offboardCandidatesCsv_nota": "Deixe vazio para não exportar arquivo de candidatos a offboard. {DATE} é substituído automaticamente."
+  },
+
+  "execucao": {
+    "_descricao": "Comportamento da execução periódica.",
+    "reportOnly": true,
+    "_reportOnly_nota": "TRUE = dry-run seguro (recomendado para validação inicial). FALSE = aplica tags no MDE.",
+    "logRetentionDays": 30,
+    "maxRetries": 3
+  },
+
+  "classificacao": {
+    "_descricao": "Limiares de classificação de lifecycle. Ajuste conforme SLA do ambiente.",
+    "diasInativo7d":  7,
+    "_diasInativo7d_nota":  "Dispositivos sem comunicação entre X e diasInativo40d dias → tag INATIVO_7D.",
+    "diasInativo40d": 40,
+    "_diasInativo40d_nota": "Dispositivos sem comunicação há mais de X dias → tag INATIVO_40D (candidato a offboard).",
+    "horasEfemero":   48,
+    "_horasEfemero_nota":   "Dispositivos com lifespan ≤ X horas E inativos → tag EFEMERO (VMSS, CI/CD runners).",
+    "tamanhoLoteBulkApi": 25
+  },
+
+  "entraSync": {
+    "_descricao": "Sincronização de VMs/Arc do Azure para grupos Entra ID (necessário para vincular a MDE Device Groups).",
+    "habilitado": true,
+    "criarGruposPorSubscription": true,
+    "_criarGruposPorSubscription_nota": "true = um Entra ID Security Group por subscription. false = um grupo global.",
+    "prefixoGrupo": "grp-mde-governance",
+    "_prefixoGrupo_nota": "Prefixo dos grupos Entra ID. Resultado: grp-mde-governance-{subNameShort}.",
+    "incluirArc": true,
+    "_incluirArc_nota": "true = inclui Azure Arc machines (on-premises/multi-cloud).",
+    "removerMembrosSemVm": true,
+    "_removerMembrosSemVm_nota": "true = remove do grupo Entra ID dispositivos que não existem mais como VM no Azure (lifecycle cleanup)."
+  },
+
+  "descoberta": {
+    "_descricao": "Descoberta automática de subscriptions Azure (4 níveis: CSV → ARM API → Azure CLI → MDE metadata).",
+    "autoDiscoverSubscriptions": true,
+    "salvarCsvAposDiscovery": true,
+    "excluirSubscriptions": [],
+    "_excluirSubscriptions_nota": "Lista de subscriptionIds a ignorar. Ex: ['sub-id-teste', 'sub-id-lab']."
+  },
+
+  "notificacao": {
+    "_descricao": "Notificação por email e/ou webhook após execução.",
+    "habilitado": false,
+    "smtpServer": "",
+    "smtpPort": 587,
+    "smtpUseSsl": true,
+    "remetente": "",
+    "destinatarios": [],
+    "enviarSomenteComAlteracoes": true,
+    "webhookUrl": "",
+    "_webhookUrl_nota": "HTTP POST com JSON de resumo da execução. Compatível com Teams, Slack, Logic Apps."
+  },
+
+  "seguranca": {
+    "confirmarExecucaoReal": true,
+    "_confirmarExecucaoReal_nota": "true = exige confirmação interativa antes de aplicar tags. Desative para automações headless (use -Force).",
+    "auditarAlteracoes": true
+  },
+
+  "agendamento": {
+    "_descricao": "Scheduled Task do Windows (alternativa ao Azure Automation).",
+    "habilitado": true,
+    "horarioExecucao": "06:00",
+    "intervaloHoras": 24,
+    "nomeTask": "MDE-DeviceGovernance-Daily",
+    "descricaoTask": "Lifecycle diário de dispositivos MDE por subscription Azure"
+  }
+}

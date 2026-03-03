@@ -1,0 +1,41 @@
+# ===================================================
+# MDE-DeviceGovernance — .gitignore
+# ===================================================
+
+# Secrets — NEVER commit credentials
+config.local.json
+*secret*
+*Secret*
+*.secret
+.env
+
+# Logs and reports — runtime artifacts
+Logs/
+Relatorios/
+Reports/
+*.log
+*-Report-*.csv
+*-Log-*.log
+*-Summary-*.txt
+AUDIT-*.txt
+
+# Temp files
+C:\temp\
+temp/
+*.tmp
+MDE-DeviceGroup-Instructions.html
+
+# Offboard candidates — may contain sensitive device info
+*offboard*.csv
+*Offboard*.csv
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# PowerShell
+*.psproj
+
+# OS
+Thumbs.db
+.DS_Store
